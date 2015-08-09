@@ -7,7 +7,7 @@ import processing.core.{PConstants, PApplet, PVector}
 import scala.collection.mutable.ArrayBuffer
 
 
-class Ant(var p:PApplet, var debug: Boolean = false, var position: PVector = null, var angle: Float = 0.0f) {
+class Ant(var p:PApplet, var position: PVector = null, var debug: Boolean = false,  var angle: Float = 0.0f) {
   if(position == null )
     position = new PVector(p.width/2, p.height/2)
 
@@ -16,6 +16,7 @@ class Ant(var p:PApplet, var debug: Boolean = false, var position: PVector = nul
   var lGreen: Float = 0.0f
   var rGreen: Float = 0.0f
   val RED_THRESHOLD: Int = 150
+  val DISTANCE_TO_WINDOW: Int = 20
 
 
   var velocity: PVector  = new PVector(0.0f, -0.5f)
@@ -96,5 +97,52 @@ def update: Rectangle = {
     val xTemp = dir.x
     dir.x = dir.x*math.cos(a).toFloat - dir.y*math.sin(a).toFloat
     dir.y = xTemp*math.sin(a).toFloat + dir.y*math.cos(a).toFloat
+  }
+
+  def calculateSensorPositionsToBaseCoordinateSystem ={
+    globalSensorPositions.clear()
+    for(i <- 0 until sensorPositions.length){
+      val x = p.screenX(sensorPositions(i).x, sensorPositions(i).y)
+      val y = p.screenY (sensorPositions(i).x, sensorPositions(i).y)
+      globalSensorPositions += new PVector(x,y)
+    }
+  }
+
+  def boundaries = {
+    var newDirection: PVector = null
+
+    if(position.x < DISTANCE_TO_WINDOW)
+      newDirection = new PVector(3,velocity.y)
+    else if(position.x > p.width-DISTANCE_TO_WINDOW)
+      newDirection = new PVector(-3,velocity.y)
+
+    if(position.y < DISTANCE_TO_WINDOW)
+      newDirection = new PVector(velocity.x, 3)
+    else if(position.y > p.height-DISTANCE_TO_WINDOW)
+      newDirection = new PVector(velocity.x, -3)
+
+    if(newDirection != null){
+      newDirection.normalize()
+      newDirection.mult(3)
+      val steer = PVector.sub(newDirection, velocity)
+      steer.limit(0.2f)
+      setRotationAngle(steer.heading())
+    }
+
+  }
+
+  def render = {
+    p.pushMatrix()
+    p.translate(position.x, position.y)
+    p.rotate(velocity.heading())  //FIXME mel -> warum nicht der Winkel??
+    p.fill(c)
+    p.stroke(55)
+    calculateSensorPositionsToBaseCoordinateSystem
+    p.ellipseMode(PConstants.RADIUS)
+    p.ellipse(-8,0,8,6)
+    p.ellipse(3,0,6,4)
+    for(pos <- sensorPositions)
+      p.ellipse(pos.x, pos.y, 1,1)
+    p.popMatrix()
   }
 }
