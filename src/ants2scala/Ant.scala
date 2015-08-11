@@ -1,8 +1,11 @@
+package ants2scala
 
-import util.State.State
-import util.{State, Rectangle}
 
-import processing.core.{PConstants, PApplet, PVector}
+import ants2scala.util.State
+import ants2scala.util.State.State
+import ants2scala.util.Rectangle
+import processing.core.{PApplet, PConstants, PVector}
+//import util.{Rectangle, State}
 
 import scala.collection.mutable.ArrayBuffer
 

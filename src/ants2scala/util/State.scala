@@ -1,4 +1,4 @@
-package util
+package ants2scala.util
 
 object State extends Enumeration {
   type State = Value

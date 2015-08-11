@@ -1,2 +1,2 @@
 # Ants2Scala
-The Ant project in Scala 
+The ants2scala.Ant project in Scala

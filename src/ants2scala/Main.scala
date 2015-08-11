@@ -1,4 +1,6 @@
-import processing.core.{PImage, PVector, PApplet}
+package ants2scala
+
+import processing.core.{PApplet, PVector}
 
 
 
