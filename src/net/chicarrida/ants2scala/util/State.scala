@@ -1,4 +1,4 @@
-package ants2scala.util
+package net.chicarrida.ants2scala.util
 
 object State extends Enumeration {
   type State = Value

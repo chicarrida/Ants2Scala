@@ -1,2 +1,2 @@
 # Ants2Scala
-The ants2scala.Ant project in Scala
+The net.chicarrida.ants2scala.Ant project in Scala

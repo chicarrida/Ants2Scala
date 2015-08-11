@@ -1,9 +1,9 @@
-package ants2scala
+package net.chicarrida.ants2scala
 
 
-import ants2scala.util.State
-import ants2scala.util.State.State
-import ants2scala.util.Rectangle
+import net.chicarrida.ants2scala.util.State
+import net.chicarrida.ants2scala.util.State.State
+import net.chicarrida.ants2scala.util.Rectangle
 import processing.core.{PApplet, PConstants, PVector}
 //import util.{Rectangle, State}
 

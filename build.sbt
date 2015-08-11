@@ -10,7 +10,7 @@ scalaVersion := "2.11.5"
 
 
 
-mainClass in assembly := Some("ants2scala.Main")
+mainClass in assembly := Some("net.chicarrida.ants2scala.Main")
 //resolvers += Resolver.sonatypeRepo("public") 
 
 resolvers +="Repository" at "https://oss.sonatype.org/content/repositories/public"

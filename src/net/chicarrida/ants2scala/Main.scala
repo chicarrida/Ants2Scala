@@ -1,4 +1,4 @@
-package ants2scala
+package net.chicarrida.ants2scala
 
 import processing.core.{PApplet, PVector}
 
