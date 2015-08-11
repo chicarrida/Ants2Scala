@@ -5,7 +5,7 @@ import net.chicarrida.ants2scala.util.State
 import net.chicarrida.ants2scala.util.State.State
 import net.chicarrida.ants2scala.util.Rectangle
 import processing.core.{PApplet, PConstants, PVector}
-//import util.{Rectangle, State}
+
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -51,7 +51,7 @@ def update: Rectangle = {
   def search = {
     lRed = p.red(p.get(globalSensorPositions(0).x.toInt, globalSensorPositions(0).y.toInt))
     rRed = p.red(p.get(globalSensorPositions(1).x.toInt, globalSensorPositions(1).y.toInt))
-    lGreen = p.green(p.get(globalSensorPositions(0).x.toInt, globalSensorPositions(0).y.toInt))
+    rGreen = p.green(p.get(globalSensorPositions(0).x.toInt, globalSensorPositions(0).y.toInt))
     lGreen = p.green(p.get(globalSensorPositions(1).x.toInt, globalSensorPositions(1).y.toInt))
 
     if(rRed > RED_THRESHOLD || lRed > RED_THRESHOLD){
