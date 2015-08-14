@@ -14,13 +14,19 @@ class Ant(var p:PApplet, var position: PVector = null, var debug: Boolean = fals
   if(position == null )
     position = new PVector(p.width/2, p.height/2)
 
+  var speed: Float = 1.0f
+  var speedCounter: Int = 20
+  var rotationCounter: Int = -25
   var lRed: Float = 0.0f
   var rRed: Float = 0.0f
   var lGreen: Float = 0.0f
   var rGreen: Float = 0.0f
+  var ranAgainstTheWall: Boolean = false
+  var rotateLeft: Boolean = true
+  var rotationStep: Float = 0.08f
+
   val RED_THRESHOLD: Int = 150
   val DISTANCE_TO_WINDOW: Int = 20
-
 
   var velocity: PVector  = new PVector(0.0f, -0.5f)
   var dir: PVector =  new PVector(0.0f, 1.0f)
@@ -39,12 +45,10 @@ def update: Rectangle = {
     goHome
 
   velocity.add(dir)
-  velocity.limit(1)
+  velocity.limit(speed)
   position.add(velocity)
 
-
   new Rectangle(position, angle, state)
-
 }
 
 
@@ -91,8 +95,8 @@ def update: Rectangle = {
 
   def setRotationAngle(a: Float) = {
     angle = a
-    dir.x = 1 //FIXME mel why??? -> normalize
-    dir.y = 0 //FIXME mel why???
+    dir.x = 1
+    dir.y = 0
     rotate2D(angle)
   }
 
@@ -113,31 +117,73 @@ def update: Rectangle = {
 
   def boundaries = {
     var newDirection: PVector = null
-
-    if(position.x < DISTANCE_TO_WINDOW)
-      newDirection = new PVector(3,velocity.y)
-    else if(position.x > p.width-DISTANCE_TO_WINDOW)
-      newDirection = new PVector(-3,velocity.y)
-
-    if(position.y < DISTANCE_TO_WINDOW)
-      newDirection = new PVector(velocity.x, 3)
-    else if(position.y > p.height-DISTANCE_TO_WINDOW)
-      newDirection = new PVector(velocity.x, -3)
+    if(!ranAgainstTheWall) {
+      val offset: Int = 20
+      if (position.x < DISTANCE_TO_WINDOW) {
+        newDirection = new PVector(offset, velocity.y)
+      }
+      else if (position.x > p.width - DISTANCE_TO_WINDOW) {
+        newDirection = new PVector(-offset, velocity.y)
+      }
+      if (position.y < DISTANCE_TO_WINDOW) {
+        newDirection = new PVector(velocity.x, offset)
+      }
+      else if (position.y > p.height - DISTANCE_TO_WINDOW) {
+        newDirection = new PVector(velocity.x, -offset)
+      }
+    }
 
     if(newDirection != null){
-      newDirection.normalize()
+      ranAgainstTheWall = true
+      rotationCounter = 36
+       determineRotationDirectionAndStep(newDirection)
+      speedCounter = 20
+      /*newDirection.normalize()
       newDirection.mult(3)
       val steer = PVector.sub(newDirection, velocity)
       steer.limit(0.2f)
-      setRotationAngle(steer.heading())
+      setRotationAngle(steer.heading())*/
+     // println("Winkel zwischen alter und neuer Richutng: "+PVector.angleBetween(dir, newDirection))
+      speed = 0.3f
+    }else{
+      if(rotateAfterRunnningAgainstWall)
+      speedCounter = speedCounter - 1
+      if(speedCounter < 0 )
+      speed = 1.0f
     }
-
   }
+
+  def determineRotationDirectionAndStep(pVector: PVector) = {
+    val angleBetween = PVector.angleBetween(pVector, dir)
+    rotationCounter = (angleBetween/rotationStep).toInt
+    if(((Math.random()* 10) %2)== 0)
+      rotateLeft = true
+    else
+      rotateLeft = false
+  }
+
+  def rotateAfterRunnningAgainstWall: Boolean = {
+    rotationCounter -= 1
+    var finishedRotating = true
+    if(rotationCounter > 0){
+      if(rotateLeft)
+        angle += 0.08f
+      else
+        angle -= 0.08f
+      setRotationAngle(angle)
+      finishedRotating = true
+    }else if(rotationCounter > -25){
+      ranAgainstTheWall = false
+      finishedRotating = false
+    }
+    finishedRotating
+  }
+
 
   def render = {
     p.pushMatrix()
     p.translate(position.x, position.y)
-    p.rotate(velocity.heading())  //FIXME mel -> warum nicht der Winkel??
+    p.rotate(dir.heading())
     p.fill(c)
     p.stroke(55)
     calculateSensorPositionsToBaseCoordinateSystem

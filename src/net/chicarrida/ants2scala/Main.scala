@@ -9,6 +9,7 @@ class Main extends PApplet {
 var a: Ant = null
 override def setup() = {
   size(400, 400)
+  //frameRate(10)
   a = new Ant(this, new PVector(width/2, height/2))
 }
 
