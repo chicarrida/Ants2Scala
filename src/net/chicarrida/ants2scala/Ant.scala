@@ -72,15 +72,15 @@ def update: Rectangle = {
     }
     setRotationAngle(angle)
   }
-//FIXME mel this is not working correctly and also needs random rotation
+
   def goHome = {
     if (position.x < home.x +5 && position.y < home.y+5 && position.x > home.x -5 && position.y > home.y-5) {
         setRotationAngle(angle+PConstants.PI)
       state = State.SEARCHING
       c = p.color(127)
-    }
 
-    dir = home
+    }
+    dir = home.get()
     dir.sub(position)
     angle = PApplet.atan2(dir.y, dir.x)
     setRotationAngle(angle)

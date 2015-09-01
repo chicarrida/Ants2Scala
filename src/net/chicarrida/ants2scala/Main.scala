@@ -18,10 +18,20 @@ class Main extends PApplet {
 
   override def draw()= {
     background(0)
+
+    //fade pic
+    //draw pic
+    //draw gradient
+    //draw rect
+    //store pic
+    //process and draw Ants
+
+
     for(t <- targets){
       t.draw()
     }
     paths.draw
+    paths.rects.clear()
     for (a <- ants) {
       paths.rects += a.update
       a.render
