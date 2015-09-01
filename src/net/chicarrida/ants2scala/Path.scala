@@ -1,8 +1,9 @@
-package net.chicarrida.ants2scala.util
+package net.chicarrida.ants2scala
 
+import net.chicarrida.ants2scala.util.Rectangle
 import processing.core.PApplet
 
-import scala.collection.mutable.{ListBuffer, ArrayBuffer}
+import scala.collection.mutable.ListBuffer
 
 class Path(p: PApplet){
 

@@ -1,9 +1,7 @@
 package net.chicarrida.ants2scala
 
-
-import net.chicarrida.ants2scala.util.State
+import net.chicarrida.ants2scala.util.{Rectangle, State}
 import net.chicarrida.ants2scala.util.State.State
-import net.chicarrida.ants2scala.util.Rectangle
 import processing.core.{PApplet, PConstants, PVector}
 
 
@@ -74,7 +72,7 @@ def update: Rectangle = {
     }
     setRotationAngle(angle)
   }
-
+//FIXME mel this is not working correctly and also needs random rotation
   def goHome = {
     if (position.x < home.x +5 && position.y < home.y+5 && position.x > home.x -5 && position.y > home.y-5) {
         setRotationAngle(angle+PConstants.PI)
