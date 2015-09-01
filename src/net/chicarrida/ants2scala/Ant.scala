@@ -10,7 +10,7 @@ import processing.core.{PApplet, PConstants, PVector}
 import scala.collection.mutable.ArrayBuffer
 
 
-class Ant(var p:PApplet, var position: PVector = null, var debug: Boolean = false,  var angle: Float = 0.0f) {
+class Ant(var p:PApplet, var angle: Float = 0.0f, var position: PVector = null, var debug: Boolean = false) {
   if(position == null )
     position = new PVector(p.width/2, p.height/2)
 
@@ -48,7 +48,7 @@ def update: Rectangle = {
   velocity.limit(speed)
   position.add(velocity)
 
-  new Rectangle(position, angle, state)
+  new Rectangle(p, new PVector(position.x,position.y), angle, state)
 }
 
 
@@ -138,12 +138,6 @@ def update: Rectangle = {
       rotationCounter = 36
        determineRotationDirectionAndStep(newDirection)
       speedCounter = 20
-      /*newDirection.normalize()
-      newDirection.mult(3)
-      val steer = PVector.sub(newDirection, velocity)
-      steer.limit(0.2f)
-      setRotationAngle(steer.heading())*/
-     // println("Winkel zwischen alter und neuer Richutng: "+PVector.angleBetween(dir, newDirection))
       speed = 0.3f
     }else{
       if(rotateAfterRunnningAgainstWall)
@@ -161,6 +155,9 @@ def update: Rectangle = {
     else
       rotateLeft = false
   }
+
+  //FIXME neuen State hierfür hinzufügen und alles auslagern 
+  //FIXME und natürlich noch collission detection...
 
   def rotateAfterRunnningAgainstWall: Boolean = {
     rotationCounter -= 1
@@ -184,6 +181,7 @@ def update: Rectangle = {
     p.pushMatrix()
     p.translate(position.x, position.y)
     p.rotate(dir.heading())
+    p.scale(0.8f)
     p.fill(c)
     p.stroke(55)
     calculateSensorPositionsToBaseCoordinateSystem
