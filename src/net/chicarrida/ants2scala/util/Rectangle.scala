@@ -8,7 +8,7 @@ class Rectangle(val p: PApplet, val position: PVector, val angle: Float, val sta
   val width: Int = 3
   val height: Int = 10
   val c: Int = p.color(0,220,0)
-  var strength: Int = 0
+  var strength: Int = 50
   if(state == State.GOING_HOME)
     strength = 255
 
@@ -22,7 +22,7 @@ class Rectangle(val p: PApplet, val position: PVector, val angle: Float, val sta
     p.rotate(angle)
     p.rectMode(PConstants.CENTER)
     p.rect(0,0,width,height)
-    strength -= 1
+   // strength -= 1
     p.popMatrix()
   }
 }

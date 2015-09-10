@@ -1,6 +1,7 @@
 package net.chicarrida.ants2scala
 
-import processing.core.{PApplet, PVector}
+
+import processing.core.{PImage, PApplet, PVector}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -8,16 +9,33 @@ class Main extends PApplet {
 
   var ants: ArrayBuffer[Ant] = new ArrayBuffer[Ant]()
   var paths: Path = new Path(this)
-  var targets: ArrayBuffer[Gradient] = new ArrayBuffer[Gradient]()
+  var target: Gradient = null
+  var image: PImage = null
+  var transparency: Float = 255
 
   override def setup() = {
     size(600, 600)
-   // frameRate(24)
+    //frameRate(12)
     setUpAnts
   }
 
   override def draw()= {
     background(0)
+    transparency -= 0.001f
+    tint(255, transparency)
+
+    if (image != null) {
+      image(image, 0, 0)
+    }
+
+    if (target != null) {
+      target.draw()
+      target = null
+    }
+    paths.draw
+    paths.rects.clear()
+    image = get()
+    if (transparency < 15) transparency = 255
 
     //fade pic
     //draw pic
@@ -27,11 +45,6 @@ class Main extends PApplet {
     //process and draw Ants
 
 
-    for(t <- targets){
-      t.draw()
-    }
-    paths.draw
-    paths.rects.clear()
     for (a <- ants) {
       paths.rects += a.update
       a.render
@@ -52,6 +65,6 @@ class Main extends PApplet {
   }
 
   override  def mousePressed:Unit = {
-  targets += new Gradient(this, new PVector(mouseX, mouseY))
+  target = new Gradient(this, new PVector(mouseX, mouseY))
   }
 }
