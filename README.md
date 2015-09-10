@@ -1,2 +1,2 @@
 # Ants2Scala
-The net.chicarrida.ants2scala.Ant project in Scala
+The [AntWithSensor](https://github.com/chicarrida/Ants/tree/master/AntWithSensors) project in Scala
